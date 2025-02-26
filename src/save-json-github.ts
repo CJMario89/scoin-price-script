@@ -67,6 +67,9 @@ async function insertCoinPrice(timestamp: number) {
           price: coin.coinPrice,
           conversionRate: coin.conversionRate,
         });
+        if (jsonData.find((data) => data.timestamp === timestamp)) {
+          return;
+        }
         jsonData.push({
           timestamp,
           price: sCoinPrice,
