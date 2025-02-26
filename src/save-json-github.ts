@@ -85,7 +85,7 @@ async function main() {
 
   const startDate = new Date(Number(lastTimestamp) ?? new Date().getTime());
   const endDate = new Date();
-  while (startDate < endDate) {
+  while (startDate <= endDate) {
     console.log(`inserted ${startDate.toISOString()}`);
     await insertCoinPrice(startDate.getTime());
     startDate.setDate(startDate.getDate() + 1);
