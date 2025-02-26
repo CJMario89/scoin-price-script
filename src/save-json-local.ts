@@ -73,7 +73,6 @@ async function insertCoinPrice(timestamp: number) {
         saveJsonToLocal(coin.symbol, jsonData);
       })
   );
-  saveTimestampToLocal(timestamp);
 }
 
 async function main() {
@@ -85,6 +84,7 @@ async function main() {
   while (startDate < endDate) {
     console.log(`inserted ${startDate.toISOString()}`);
     await insertCoinPrice(startDate.getTime());
+    saveTimestampToLocal(startDate.getDate() + 1);
     startDate.setDate(startDate.getDate() + 1);
   }
 }
