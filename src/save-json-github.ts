@@ -90,7 +90,6 @@ async function main() {
     await insertCoinPrice(startDate.getTime());
     startDate.setDate(startDate.getDate() + 1);
     saveTimestampToLocal(startDate.getTime());
-    break;
   }
   try {
     execSync("git add .");
