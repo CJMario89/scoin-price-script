@@ -3,6 +3,7 @@ import { Pool } from "../type";
 import { getSCoinPrice, normalizeSymbol } from "../utils";
 import path from "path";
 import fs from "fs";
+import { execSync } from "child_process";
 dotenv.config();
 
 const scallopPriceApi = process.env.SCALLOP_PRICE_API;
@@ -70,7 +71,7 @@ async function insertCoinPrice(timestamp: number) {
           timestamp,
           price: sCoinPrice,
         });
-        saveJsonToLocal(coin.symbol, jsonData);
+        saveJsonToLocal(normalizeSymbol(coin.symbol), jsonData);
       })
   );
   saveTimestampToLocal(timestamp);
@@ -86,6 +87,15 @@ async function main() {
     console.log(`inserted ${startDate.toISOString()}`);
     await insertCoinPrice(startDate.getTime());
     startDate.setDate(startDate.getDate() + 1);
+    break;
+  }
+  try {
+    execSync("git add .");
+    execSync("git commit -m 'Updated price data'");
+    execSync("git push origin main");
+    console.log("✅ JSON file updated and pushed to GitHub!");
+  } catch (error) {
+    console.error("❌ Error pushing to GitHub:", error.message);
   }
 }
 
